@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+// 2 fragments, one is a listview, the other is a webview
 
 public class MainActivity extends AppCompatActivity {
 
