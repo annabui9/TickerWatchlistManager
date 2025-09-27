@@ -9,7 +9,11 @@ import androidx.fragment.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,7 +23,10 @@ import android.widget.ListView;
 
 public class TickerListFragment extends Fragment {
 
-    ListView tickerListWidget;
+    private ListView tickerListWidget;
+    private ArrayList<String> tickerList;
+    private ArrayAdapter<String> adapter;
+    private int maxEntries;
 
     public static TickerListFragment newInstance(String param1, String param2) {
         TickerListFragment fragment = new TickerListFragment();
@@ -44,6 +51,54 @@ public class TickerListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_ticker_list, container, false);
         tickerListWidget = view.findViewById(R.id.tickerSymbols);
+
+        onClickListener();
+        creatingList();
         return view;
     }
+
+    private void creatingList(){
+
+        tickerList = new ArrayList<>();
+        tickerList.add("NEE");
+        tickerList.add("AAPL");
+        tickerList.add("DIS");
+
+        adapter = new ArrayAdapter<>(requireContext(),
+                android.R.layout.simple_list_item_1, tickerList);
+        tickerListWidget.setAdapter(adapter);
+    }
+
+
+    private void onClickListener(){
+
+        tickerListWidget.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long l) {
+                String ticker = (String) parent.getItemAtPosition(position);
+                InfoWebFragment webFragment = (InfoWebFragment) getParentFragmentManager()
+                        .findFragmentByTag("infoWebFrag");
+                if(webFragment != null){
+                    webFragment.loadTickerInfo(ticker);
+                }
+            }
+        });
+    }
+
+    private void addTickers(String newTicker){ //ensures there are only 6 elements on list, + adds new to 6th, not used
+        if(tickerList.size() < maxEntries){
+            tickerList.add(newTicker);
+        }else {
+            tickerList.set(5, newTicker);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    //testing
+//     private void useStringResource(){
+//        String[] content = getResources().getStringArray(R.array.tickerStrings);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
+//                android.R.layout.simple_list_item_1, content);
+//        tickerListWidget.setAdapter(adapter);
+//    }
 }

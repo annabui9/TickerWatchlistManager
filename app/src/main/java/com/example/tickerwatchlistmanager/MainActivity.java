@@ -15,7 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 public class MainActivity extends AppCompatActivity {
 
-    FragmentManager fg;
+    private FragmentManager fg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

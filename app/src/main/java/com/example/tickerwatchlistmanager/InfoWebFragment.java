@@ -16,7 +16,7 @@ import android.webkit.WebView;
  */
 public class InfoWebFragment extends Fragment {
 
-    WebView infoWebWidget;
+    private WebView infoWebWidget;
 
     public InfoWebFragment() {
         // Required empty public constructor
@@ -47,4 +47,12 @@ public class InfoWebFragment extends Fragment {
 
         return view;
     }
+
+    public void loadTickerInfo(String ticker){ //takes from tickerSymbols and puts into url to be used
+        if (infoWebWidget != null){
+            String url = "https://seekingalpha.com/symbol/" + ticker;
+            infoWebWidget.loadUrl(url);
+        }
+    }
+
 }
