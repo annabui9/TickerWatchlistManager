@@ -26,8 +26,12 @@ public class TickerListFragment extends Fragment {
     private ListView tickerListWidget;
     private ArrayList<String> tickerList;
     private ArrayAdapter<String> adapter;
-    private int maxEntries;
+    private int maxEntries = 6;
 
+
+    public TickerListFragment(){
+
+    }
     public static TickerListFragment newInstance(String param1, String param2) {
         TickerListFragment fragment = new TickerListFragment();
         Bundle args = new Bundle();
@@ -38,10 +42,6 @@ public class TickerListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if(getArguments() != null) {
-
-
-        }
     }
 
     @Override
@@ -52,8 +52,8 @@ public class TickerListFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_ticker_list, container, false);
         tickerListWidget = view.findViewById(R.id.tickerSymbols);
 
-        onClickListener();
         creatingList();
+        onClickListener();
         return view;
     }
 
@@ -85,7 +85,11 @@ public class TickerListFragment extends Fragment {
         });
     }
 
-    private void addTickers(String newTicker){ //ensures there are only 6 elements on list, + adds new to 6th, not used
+    public void addTickers(String newTicker){ //ensures there are only 6 elements on list, + adds new to 6th, not used
+        if(tickerList.contains(newTicker)){
+            return;
+        }
+
         if(tickerList.size() < maxEntries){
             tickerList.add(newTicker);
         }else {
