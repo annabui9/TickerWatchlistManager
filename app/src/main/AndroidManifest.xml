@@ -11,6 +11,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TickerWatchlistManager">
+        <receiver
+            android:name="receivers.SMSReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="android.permission,BROADCAST_SMS">
+            <intent-filter>
+                <action android:name="android.provider.Teleohony.SMS_RECEIVED">
+                </action>
+                <category android:name= "android.intent.category.DEFAULT">
+                </category>
+            </intent-filter>
+        </receiver>
         <activity
             android:screenOrientation="landscape"
             android:name=".MainActivity"
