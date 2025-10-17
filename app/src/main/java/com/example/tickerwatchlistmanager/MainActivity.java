@@ -1,7 +1,9 @@
 package com.example.tickerwatchlistmanager;
 
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +12,8 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -30,9 +34,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
 
-
         if (savedInstanceState == null){
-
 
             fg = getSupportFragmentManager();
             FragmentTransaction trans = fg.beginTransaction();
@@ -45,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
             iwf = new InfoWebFragment();
             trans.add(R.id.InfoWebFCV, iwf, "infoWebFrag");
 
-
             trans.commit();
         } else{
             fg = getSupportFragmentManager();
@@ -53,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
             iwf = (InfoWebFragment) fg.findFragmentByTag("infoWebFrag");
         }
 
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.RECEIVE_SMS) != PackageManager.PERMISSION_GRANTED) {
+            String[] perm = new String[]{Manifest.permission.RECEIVE_SMS};
+            ActivityCompat.requestPermissions(this, perm, 67);
+        }
 
         handleIntent(getIntent());
     }
@@ -71,11 +76,8 @@ public class MainActivity extends AppCompatActivity {
         String ticker = intent.getStringExtra("validTicker");
         String sms = intent.getStringExtra("sms");
 
-
         if (isTickerValid && ticker != null){
             Toast.makeText(this, "Added " + ticker + " to watchlist", Toast.LENGTH_LONG).show();
-
-
             if (tlf != null){
                 tlf.addTickers(ticker);
             }
